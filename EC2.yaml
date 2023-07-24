@@ -23,10 +23,10 @@ Mappings:
       us-west-2: 
         id: "vpc-0ad44ecbf86efe865"
 
-Conditions:
-  IsProduction: !Equals
-    - !Ref Region
-    - "us-east-1"
+# Conditions:
+#   IsProduction: !Equals
+#     - !Ref Region
+#     - "us-east-1"
 
 
 Resources:
