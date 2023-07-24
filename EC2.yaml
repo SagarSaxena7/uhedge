@@ -25,7 +25,7 @@ Mappings:
 Conditions:
   IsProduction: !Equals
     - !Ref Region
-    - "us-west-2"
+    - "us-east-1"
 
 
 Resources:
@@ -62,6 +62,8 @@ Resources:
       Tags:
         - Key: AppName
           Value: "Hedge"
+        - Key: Name
+          Value: "Hedge sg"
 
 Outputs:
   HedgeSecurityGroupId:
