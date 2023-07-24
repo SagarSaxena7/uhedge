@@ -32,7 +32,7 @@ Mappings:
 Resources:
 
   HedgeEc2Instance:
-    Conditions: IsProduction
+    # Conditions: IsProduction
     Type: AWS::EC2::Instance
     Properties:
       KeyName: "MyKey"
