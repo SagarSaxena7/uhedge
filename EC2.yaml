@@ -17,7 +17,6 @@ Parameters:
 Mappings:
   
   VpcId:
-    Region:
       us-east-1: 
         id: "vpc-0bddc149e76f95fc0"
       us-west-2: 
