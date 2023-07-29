@@ -40,7 +40,7 @@ Resources:
         Ref: ImageIdForUhedge
       InstanceType: "t2.micro"
       SecurityGroupIds:
-        - Ref: HedgeSecurityGroup
+        - !ImportValue HedgeSecurityGroupId
       UserData: !Base64 |
         #!/bin/bash -ex
         # put your script here
@@ -50,24 +50,24 @@ Resources:
         - Key: Region
           Value: "us-east-1" 
 
-  HedgeSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: "Sg for hedge instances"
-      VpcId: !FindInMap [ VpcId, !Ref 'AWS::Region', id ]
-      SecurityGroupIngress:
-        - FromPort: 22
-          ToPort: 22
-          IpProtocol: tcp
-      Tags:
-        - Key: AppName
-          Value: "Hedge"
-        - Key: Name
-          Value: "Hedge sg"
+  # HedgeSecurityGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupDescription: "Sg for hedge instances"
+  #     VpcId: !FindInMap [ VpcId, !Ref 'AWS::Region', id ]
+  #     SecurityGroupIngress:
+  #       - FromPort: 22
+  #         ToPort: 22
+  #         IpProtocol: tcp
+  #     Tags:
+  #       - Key: AppName
+  #         Value: "Hedge"
+  #       - Key: Name
+  #         Value: "Hedge sg"
 
-Outputs:
-  HedgeSecurityGroupId:
-    Description: SG id
-    Value: !GetAtt HedgeSecurityGroup.GroupId
-    Export:
-      Name: HedgeSecurityGroupId
+# Outputs:
+#   HedgeSecurityGroupId:
+#     Description: SG id
+#     Value: !GetAtt HedgeSecurityGroup.GroupId
+#     Export:
+#       Name: HedgeSecurityGroupId
