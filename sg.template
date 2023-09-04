@@ -1,0 +1,73 @@
+---
+
+Parameters:
+
+  ImageIdForUhedge:
+    Type: String 
+    Description: Image id for Hedge
+    Default: "ami-06ca3ca175f37dd66"
+  
+  Region:
+    Type: String
+    Description: Region to deploy resouces in
+    AllowedValues:
+      - "us-east-1"
+      - "us-west-2"
+
+Mappings:
+  
+  VpcId:
+      us-east-1: 
+        id: "vpc-0bddc149e76f95fc0"
+      us-west-2: 
+        id: "vpc-0ad44ecbf86efe865"
+
+Conditions:
+  IsProduction: !Equals
+    - !Ref Region
+    - "us-east-1"
+
+
+Resources:
+
+  # HedgeEc2Instance:
+  #   Condition: IsProduction
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     KeyName: "MyKey"
+  #     DisableApiTermination: true
+  #     ImageId: 
+  #       Ref: ImageIdForUhedge
+  #     InstanceType: "t2.micro"
+  #     SecurityGroupIds:
+  #       - !ImportValue HedgeSecurityGroupId
+  #     UserData: !Base64 |
+  #       !/bin/bash -ex
+  #       put your script here
+  #     Tags:
+  #       - Key: Name
+  #         Value: "MyFirstEc2Instance"
+  #       - Key: Region
+  #         Value: "us-east-1" 
+
+  HedgeSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Sg for hedge instances"
+      VpcId: !FindInMap [ VpcId, !Ref 'AWS::Region', id ]
+      SecurityGroupIngress:
+        - FromPort: 22
+          ToPort: 22
+          IpProtocol: tcp
+      Tags:
+        - Key: AppName
+          Value: "Hedge"
+        - Key: Name
+          Value: "Hedge sg"
+
+Outputs:
+  HedgeSecurityGroupId:
+    Description: SG id
+    Value: !GetAtt HedgeSecurityGroup.GroupId
+    Export:
+      Name: HedgeSecurityGroupId

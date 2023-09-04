@@ -1,0 +1,5 @@
+{   
+    "StackName": "teststack01",
+    "ImageIdForUhedge": "ami-06ca3ca175f37dd66",
+    "Region": "us-west-2"
+}

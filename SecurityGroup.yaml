@@ -1,0 +1,38 @@
+Resources:
+  
+  PubicSubnetSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: SecurityGroupbyCFN
+      GroupDescription: SecurityGroupbyCFN
+      VpcId: vpc-06c7973a7f16e7d5d
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+          CidrIp: 0.0.0.0/0
+  PrivateAccessSSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Security group for Private subnet
+      GroupDescription: Security group for Private subnet
+      VpcId: vpc-06c7973a7f16e7d5d
+      SecurityGroupIngress:
+        - IpProtocol: icmp
+          FromPort: 8
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3389
+          ToPort: 3389
+          SourceSecurityGroupId: 
+            Ref: PubicSubnetSSG
+
+          
+      
+      
+      

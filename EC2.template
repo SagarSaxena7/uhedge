@@ -3,7 +3,7 @@
 Parameters:
 
   ImageIdForUhedge:
-    Type: String 
+    Type: AWS::EC2::Image::Id
     Description: Image id for Hedge
     Default: "ami-06ca3ca175f37dd66"
   
@@ -13,6 +13,11 @@ Parameters:
     AllowedValues:
       - "us-east-1"
       - "us-west-2"
+  
+  SecurityGroupId:
+    Type: String
+    Description: sg ids to attach
+    
 
 Mappings:
   
@@ -40,34 +45,12 @@ Resources:
         Ref: ImageIdForUhedge
       InstanceType: "t2.micro"
       SecurityGroupIds:
-        - !ImportValue HedgeSecurityGroupId
+        - !Ref SecurityGroupId
       UserData: !Base64 |
-        #!/bin/bash -ex
-        # put your script here
+        !/bin/bash -ex
+        put your script here
       Tags:
         - Key: Name
           Value: "MyFirstEc2Instance"
         - Key: Region
           Value: "us-east-1" 
-
-  # HedgeSecurityGroup:
-  #   Type: AWS::EC2::SecurityGroup
-  #   Properties:
-  #     GroupDescription: "Sg for hedge instances"
-  #     VpcId: !FindInMap [ VpcId, !Ref 'AWS::Region', id ]
-  #     SecurityGroupIngress:
-  #       - FromPort: 22
-  #         ToPort: 22
-  #         IpProtocol: tcp
-  #     Tags:
-  #       - Key: AppName
-  #         Value: "Hedge"
-  #       - Key: Name
-  #         Value: "Hedge sg"
-
-# Outputs:
-#   HedgeSecurityGroupId:
-#     Description: SG id
-#     Value: !GetAtt HedgeSecurityGroup.GroupId
-#     Export:
-#       Name: HedgeSecurityGroupId

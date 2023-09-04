@@ -1,0 +1,23 @@
+Parameters:
+
+  Region:
+    Type: String
+    Default: us-east-1
+    Description: Region to pass into ec2 child stack
+
+Resources:
+
+  ParentStack:
+    Type: AWS::CloudFormation::Stack
+    Properties: 
+      Parameters: 
+        Region: !Ref Region
+      TemplateURL: https://s3.amazonaws.com/nested-stack-bucket-us-west-2/sg.template
+
+  # EC2Stack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties: 
+  #     Parameters: 
+  #       Region: !Ref Region
+  #       SecurityGroupId: !GetAtt ParentStack.Outputs.HedgeSecurityGroupId
+  #     TemplateURL: https://s3.amazonaws.com/nested-stack-bucket-us-west-2/EC2.template
