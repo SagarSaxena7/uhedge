@@ -6,7 +6,7 @@ Parameters:
     Default: 10.0.0.0/16
   
   AZ:
-    Description: 
+    Description: "ParameterForAZ"
     Type: AWS::EC2::AvailabilityZone::Name
     Default: us-east-1a
 
@@ -55,11 +55,6 @@ Resources:
       GatewayId: !Ref CFNIGW
   CFNIGW:
     Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
-        - Key: Name
-          Value: CFNIGW
-    Properties:
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
