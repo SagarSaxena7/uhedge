@@ -1,9 +1,14 @@
-#Paramater:
+Parameters:
 
-  #MyVPCCidrBlock:
-    #Type: AWS::EC2::VPCCidrBlock
-    #Description: "myVPC CIDR block"
-    #Default: 10.0.0.0/16
+  MyVPCCidrBlock:
+    Type: AWS::EC2::VPCCidrBlock
+    Description: "myVPC CIDR block"
+    Default: 10.0.0.0/16
+  
+  AZ:
+    Description: 
+    Type: AWS::EC2::AvailabilityZone::Name
+    Default: us-east-1a
 
 Resources:
 
@@ -15,68 +20,69 @@ Resources:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       Tags:
-        - Key: keyname
-          Value: value
+        - Key: Name
+          Value: myVPCCFN
   PrivateSubnetCFN:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-east-1a
-      VpcId: !Ref myVPCCFN
-      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Ref AZ
+      VpcId: !Ref myVPCCFN 
+      CidrBlock: !Ref MyVPCCidrBlock
       Tags:
-        - Key: keyname
-          Value: value
+        - Key: Name
+          Value: PrivateSubnetCFN
   PublicSubnetCFN:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-east-1a
+      AvailabilityZone: !Ref AZ
       VpcId: !Ref myVPCCFN
-      CidrBlock: 10.0.1.0/24
+      CidrBlock: !Ref MyVPCCidrBlock
       Tags:
-        - Key: keyname
-          Value: value
+        - Key: Name
+          Value: PublicSubnetCFN
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref myVPCCFN
       Tags:
-        - Key: keyname
-          Value: value
+        - Key: Name
+          Value: PublicRouteTable
   publicRoutetoInternet:
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !GetAtt PublicRouteTable.RouteTableId
+      RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0	
-      GatewayId:
-         Ref: CFNIGW
+      GatewayId: !Ref CFNIGW
   CFNIGW:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-        - Key: keyname
-          Value: value
-  AttachGateway:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      VpcId: vpc-id
-      InternetGatewayId: 
-        Ref: CFNIGW
-    Type: AWS::EC2::InternetGateway
+        - Key: Name
+          Value: CFNIGW
     Properties:
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref myVPCCFN
-      InternetGatewayId: 
-        Ref: CFNIGW
+      InternetGatewayId: !Ref CFNIGW
+  AttachingRouteTabletoPublicSubnet:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetCFN
+      RouteTableId: !Ref PublicRouteTable
   PrivateRoutetable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref myVPCCFN
       Tags:
-        - Key: keyname
-          Value: value
+        - Key: Name
+          Value: PrivateRouteTable
+  AttachingRouteTabletoPrivateSubnet:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetCFN
+      RouteTableId: !Ref PrivateRoutetable
 
 
-          ###Testing##
+          
   
