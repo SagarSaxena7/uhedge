@@ -63,7 +63,7 @@ Resources:
     Properties:
        NetworkAclId: !Ref PublicNacl
        RuleNumber: 100
-       Protocol: tcp
+       Protocol: 6
        RuleAction: allow
        CidrBlock: 0.0.0.0/0
        PortRange:
@@ -75,11 +75,18 @@ Resources:
          NetworkAclId: !Ref PublicNacl
          RuleAction: allow
          RuleNumber: 100
-         Protocol: tcp
+         Protocol: 6
+         Egress: true
          CidrBlock: 0.0.0.0/0
          PortRange:
               From: 3389 
               To: 3389
+  NaclAsstoPublicSubnet:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+         SubnetId: !Ref PublicSubnetCFN
+         NetworkAclId: !Ref PublicNacl
+         
 
 
   PublicRouteTable:
