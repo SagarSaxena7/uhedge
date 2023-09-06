@@ -47,8 +47,8 @@ Resources:
     Properties:
          VpcId: !Ref myVPCCFN
          Tags:
-          - key: Name
-            Value: PrivateNacl
+           - Key: Name
+             Value: PrivateNacl
   
   InboundRuleforPrivateNacl:
     Type: AWS::EC2::NetworkAclEntry
@@ -62,9 +62,9 @@ Resources:
               From: 3389
               To: 3389
     
-    OutboundRuleforPrivateNacl:
-      Type: AWS::EC2::NetworkAclEntry
-      Properties:
+  OutboundRuleforPrivateNacl:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
          NetworkAclId: !Ref PrivateNacl
          RuleAction: allow
          RuleNumber: 100
@@ -75,9 +75,9 @@ Resources:
               From: 3389
               To: 3389
     
-    NaclAsstoPrivateSubnet:
-      Type: AWS::EC2::SubnetNetworkAclAssociation
-      Properties:
+  NaclAsstoPrivateSubnet:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
          SubnetId: !Ref PrivateSubnetCFN
          NetworkAclId: !Ref PrivateNacl
       
