@@ -8,12 +8,12 @@ Parameters:
   PublicSubnetCidrBlock:
     Type: String
     Description: "myVPC CIDR block"
-    Default: 10.0.0.1/20
+    Default: 10.0.1.0/24
   
   PrivateSubnetCidrBlock:
     Type: String
     Description: "myVPC CIDR block"
-    Default: 10.0.1.0/20
+    Default: 10.0.3.0/24
   
   AZ:
     Description: "ParameterForAZ"
