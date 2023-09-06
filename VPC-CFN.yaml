@@ -1,9 +1,19 @@
 Parameters:
 
   MyVPCCidrBlock:
-    Type: AWS::EC2::VPCCidrBlock
+    Type: String
     Description: "myVPC CIDR block"
     Default: 10.0.0.0/16
+
+  PublicSubnetCidrBlock:
+    Type: String
+    Description: "myVPC CIDR block"
+    Default: 10.0.0.1/20
+  
+  PrivateSubnetCidrBlock:
+    Type: String
+    Description: "myVPC CIDR block"
+    Default: 10.0.1.0/20
   
   AZ:
     Description: "ParameterForAZ"
@@ -27,7 +37,7 @@ Resources:
     Properties:
       AvailabilityZone: !Ref AZ
       VpcId: !Ref myVPCCFN 
-      CidrBlock: !Ref MyVPCCidrBlock
+      CidrBlock: !Ref PrivateSubnetCidrBlock
       Tags:
         - Key: Name
           Value: PrivateSubnetCFN
@@ -36,10 +46,21 @@ Resources:
     Properties:
       AvailabilityZone: !Ref AZ
       VpcId: !Ref myVPCCFN
-      CidrBlock: !Ref MyVPCCidrBlock
+      CidrBlock: !Ref PublicSubnetCidrBlock
       Tags:
         - Key: Name
           Value: PublicSubnetCFN
+  PublicNacl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+        VpcId: !Ref myVPCCFN
+        Tags:
+        - Key: Name
+          Value: PublicNacl
+  
+  InboundRuleForPublicNacl:
+
+
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -55,6 +76,10 @@ Resources:
       GatewayId: !Ref CFNIGW
   CFNIGW:
     Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: CFNIGW
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
