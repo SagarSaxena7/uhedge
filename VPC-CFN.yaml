@@ -27,7 +27,7 @@ Resources:
   myVPCCFN:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 10.0.0.0/16
+      CidrBlock: !Ref MyVPCCidrBlock
       EnableDnsSupport: true
       Tags:
         - Key: Name
@@ -118,9 +118,10 @@ Resources:
          Protocol: 6
          Egress: true
          CidrBlock: 0.0.0.0/0
-         PortRange:
-              From: 3389 
-              To: 3389
+         PortRange: 
+           From: 1024
+           To: 65535
+              
   NaclAsstoPublicSubnet:
     Type: AWS::EC2::SubnetNetworkAclAssociation
     Properties:
@@ -170,6 +171,14 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateSubnetCFN
       RouteTableId: !Ref PrivateRoutetable
+
+Outputs:
+  VPCID:
+    Description: VPCID
+    Value: !Ref myVPCCFN
+    Export:
+      Name: VPCID
+
 
 
           
