@@ -1,0 +1,30 @@
+Parameters:
+  MyVPCCidrBlock:
+    Type: String
+    Description: "myVPC CIDR block"
+    Default: 10.0.0.0/16
+  
+  PublicSubnetCidrBlock:
+    Type: String
+    Description: "PublicSubnetCidrBlock"
+    Default: 10.0.1.0/24
+  
+  PrivateSubnetCidrBlock:
+    Type: String
+    Description: "PrivateSubnetCidrBlock"
+    Default: 10.0.3.0/24
+  
+  VPCID:
+    Type: String
+    Description: "MyVPC VPCID"
+    Default: vpc-0e1511c215463608f
+
+
+
+Resources:
+
+  SecurityGroup:
+    Type: AWS::CloudFormation::Stack   
+      Parameters:
+        VPCID: !Ref VPCID
+      TemplateURL: s3://mybucket7554/SecurityGroup.yaml
