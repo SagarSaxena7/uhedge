@@ -1,3 +1,7 @@
+Parameters:
+  VPCID:
+    Type: String
+
 Resources:
   
   PubicSubnetSSG:
@@ -5,7 +9,7 @@ Resources:
     Properties:
       GroupName: SecurityGroupbyCFN
       GroupDescription: SecurityGroupbyCFN
-      VpcId: vpc-0e19598e15300a2d4
+      VpcId: !Ref VPCID
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
@@ -20,7 +24,7 @@ Resources:
     Properties:
       GroupName: Security group for Private subnet
       GroupDescription: Security group for Private subnet
-      VpcId: vpc-0e19598e15300a2d4
+      VpcId: !Ref VPCID
       SecurityGroupIngress:
         - IpProtocol: icmp
           FromPort: 8
