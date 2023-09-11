@@ -1,30 +1,39 @@
 Parameters:
-  MyVPCCidrBlock:
-    Type: String
-    Description: "myVPC CIDR block"
-    Default: 10.0.0.0/16
+  #MyVPCCidrBlock:
+    #Type: String
+    #Description: "myVPC CIDR block"
+    #Default: 10.0.0.0/16
   
-  PublicSubnetCidrBlock:
-    Type: String
-    Description: "PublicSubnetCidrBlock"
-    Default: 10.0.1.0/24
+  #PublicSubnetCidrBlock:
+    #Type: String
+    #Description: "PublicSubnetCidrBlock"
+    #Default: 10.0.1.0/24
   
-  PrivateSubnetCidrBlock:
-    Type: String
-    Description: "PrivateSubnetCidrBlock"
-    Default: 10.0.3.0/24
+  #PrivateSubnetCidrBlock:
+    #Type: String
+    #Description: "PrivateSubnetCidrBlock"
+    #Default: 10.0.3.0/24
   
   VPCID:
     Type: String
     Description: "MyVPC VPCID"
     Default: vpc-0e1511c215463608f
-
+  PublicSubnet:
+    Type: String
+    Description: "Myvpc public Subnet"
+    Default: subnet-0ec0f748fd14c1b7d
+  PrivateSubnet:
+    Type: String
+    Description: "Myvpc Private subnet"
+    Default: subnet-0db8a3204fbd71d04
 
 
 Resources:
 
   SecurityGroup:
-    Type: AWS::CloudFormation::Stack   
+    Type: AWS::CloudFormation::Stack  
+    Properties:
+          
       Parameters:
         VPCID: !Ref VPCID
-      TemplateURL: s3://mybucket7554/SecurityGroup.yaml
+      TemplateURL: https://childstackbucket12344321.s3.amazonaws.com/SecurityGroup.yaml
