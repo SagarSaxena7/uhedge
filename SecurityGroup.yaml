@@ -19,6 +19,9 @@ Resources:
           FromPort: 3389
           ToPort: 3389
           CidrIp: 0.0.0.0/0
+
+
+     
   PrivateAccessSSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -35,6 +38,12 @@ Resources:
           ToPort: 3389
           SourceSecurityGroupId: 
             Ref: PubicSubnetSSG
+PublicSSGID:
+    Description: "Public security group ID"
+    Value: !Ref PubicSubnetSSG
+    Export:
+      Name: PublicSSGID
+  
 
           
       
