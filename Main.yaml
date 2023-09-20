@@ -13,6 +13,9 @@ Parameters:
     #Type: String
     #Description: "PrivateSubnetCidrBlock"
     #Default: 10.0.3.0/24
+
+  
+    
   
   VPCID:
     Type: String
@@ -26,6 +29,7 @@ Parameters:
     Type: String
     Description: "Myvpc Private subnet"
     Default: subnet-0db8a3204fbd71d04
+  
 
 
 Resources:
@@ -37,3 +41,12 @@ Resources:
       Parameters:
         VPCID: !Ref VPCID
       TemplateURL: https://childstackbucket12344321.s3.amazonaws.com/SecurityGroup.yaml
+      
+  ALB:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: 
+      Parameters: 
+        publicSubnetID: !Ref PublicSubnet
+            
+                 
