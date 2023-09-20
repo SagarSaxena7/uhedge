@@ -6,9 +6,9 @@ Parameters:
     Type: String
     Description: "PublicSubnetID"
   
-  TargetGroup:
-    Type: String
-    Description: "Targetgroupname"
+  #TargetGroup:
+    #Type: String
+    #Description: "Targetgroupname"
   VPCID:
     Type: String
     Description: "VPCID for ALB"
@@ -40,7 +40,7 @@ Resources:
     Properties: 
       
       
-      Name: !Ref TargetGroup
+      Name: TGCFNFORALB
       Port: 80
       Protocol: http
       
@@ -49,7 +49,9 @@ Resources:
           Value: true
         
       
-      TargetType: String
+      TargetType: instance
+      Targets:
+           - Id: 	i-07e82cd0b423acfc2
       UnhealthyThresholdCount: Integer
       VpcId: !Ref VPCID
 
