@@ -1,0 +1,58 @@
+Parameters:
+  PublicSSGID:
+    Type: String
+    Description: "PublicSSGID from another stack securitygroup"
+  publicSubnetID:
+    Type: String
+    Description: "PublicSubnetID"
+  
+  TargetGroup:
+    Type: String
+    Description: "Targetgroupname"
+  VPCID:
+    Type: String
+    Description: "VPCID for ALB"
+    
+  
+
+Resources:
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+      Name: MyALB
+      Scheme: Internet-facing
+      SecurityGroups: 
+        - !Ref PublicSSGID
+      Subnets: 
+        - !Ref publicSubnetID
+  
+  ALBListner:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - Type: forward    
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: http
+  
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      
+      
+      Name: !Ref TargetGroup
+      Port: 80
+      Protocol: http
+      
+      TargetGroupAttributes: 
+        - Key: stickiness.enabled
+          Value: true
+        
+      
+      TargetType: String
+      UnhealthyThresholdCount: Integer
+      VpcId: !Ref VPCID
+
+      
+
+
