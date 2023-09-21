@@ -2,9 +2,12 @@ Parameters:
   PublicSSGID:
     Type: String
     Description: "PublicSSGID from another stack securitygroup"
-  publicSubnetID:
+  publicSubnet1A:
     Type: String
-    Description: "PublicSubnetID"
+    Description: "PublicSubnet1AID"
+  PublicSubnet1B:
+    Type: String
+    Description: "PublicSubnet1BID"
   
   #TargetGroup:
     #Type: String
@@ -20,20 +23,23 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties: 
       Name: MyALB
-      Scheme: Internet-facing
+      Scheme: internet-facing
       SecurityGroups: 
         - !Ref PublicSSGID
       Subnets: 
-        - !Ref publicSubnetID
+        - !Ref publicSubnet1A
+        - !Ref PublicSubnet1B
+      Type: application
   
   ALBListner:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties: 
       DefaultActions: 
-        - Type: forward    
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
       LoadBalancerArn: !Ref ALB
       Port: 80
-      Protocol: http
+      Protocol: HTTP
   
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -42,7 +48,7 @@ Resources:
       
       Name: TGCFNFORALB
       Port: 80
-      Protocol: http
+      Protocol: HTTP
       
       TargetGroupAttributes: 
         - Key: stickiness.enabled
@@ -50,10 +56,14 @@ Resources:
         
       
       TargetType: instance
-      Targets:
-           - Id: 	i-07e82cd0b423acfc2
-      UnhealthyThresholdCount: Integer
       VpcId: !Ref VPCID
+
+Outputs:
+     TGID:
+      Description: "ARN of TargetGroup"
+      Value: !Ref TargetGroup
+      Export:
+        Name: TGID
 
       
 
