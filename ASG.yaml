@@ -1,0 +1,55 @@
+Parameters:
+  TGID:
+    Type: String
+    Description: "Target group ARN from ALB child stack"
+  PublicSubnet1A:
+    Type: String
+    Description: "Myvpc public Subnet1A"
+  PublicSubnet1B:
+    Type: String
+    Description: "My VPC Public Subnet1B"
+    
+
+Resources:
+    Asg:
+      Type: AWS::AutoScaling::AutoScalingGroup
+      Properties: 
+        AutoScalingGroupName: MYASGBYCFN
+        AvailabilityZones: 
+          - us-east-1a
+          - us-east-1b
+        
+        HealthCheckType: EC2
+        LaunchTemplate: 
+          LaunchTemplateId: !Ref LaunchTemplatebyCFN
+          Version: !GetAtt LaunchTemplatebyCFN.LatestVersionNumber
+        MaxSize: 3
+        MinSize: 1
+        TargetGroupARNs: 
+          - !Ref TGID
+        VPCZoneIdentifier: 
+          - !Ref PublicSubnet1A
+          - !Ref PublicSubnet1B
+
+    LaunchTemplatebyCFN:
+      Type: AWS::EC2::LaunchTemplate
+      Properties: 
+        LaunchTemplateName: myLaunchtemplatebycfn
+        VersionDescription: initial version
+        LaunchTemplateData: 
+            ImageId: ami-03a6eaae9938c858c
+            InstanceInitiatedShutdownBehavior: stop
+            InstanceType: t2.micro
+            SecurityGroupIds: 
+              - sg-0d4e61fa5c1a008aa
+            UserData: !Base64
+              Fn::Sub: |
+                 #!/bin/bash
+                 yum update -y
+                 yum install -y httpd.x86_64
+                 systemctl start httpd.service
+                 systemctl enable httpd.service
+                 echo “Hello World from $(hostname -f)” > /var/www/html/index.html
+
+
+       
