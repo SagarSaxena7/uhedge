@@ -1,0 +1,47 @@
+Resources:
+    MyALB:
+        Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+        Properties: 
+            IpAddressType: ipv4    
+            Name: MyALBwithoutnestedstack
+            Scheme: internet-facing
+            SecurityGroups: 
+                - sg-0d4e61fa5c1a008aa
+            
+            Subnets: 
+                - subnet-0ec0f748fd14c1b7d
+                - subnet-091e7f96391737d79
+            
+            Type: application
+    
+    MyFirstTG:
+        Type: AWS::ElasticLoadBalancingV2::TargetGroup
+        Properties: 
+            HealthyThresholdCount: 2
+            IpAddressType: ipv4
+            Name: MyFirstTGbyCFN
+            Port: 80
+            Protocol: HTTP
+            TargetGroupAttributes: 
+                -   Key: stickiness.enabled
+                    Value: true
+
+            Targets: 
+                -   Id: i-0a8efdaf72753a96e
+                    Port: 80
+
+            TargetType: instance
+            
+            VpcId: vpc-0e1511c215463608f
+
+    MyALBlistner:
+        Type: AWS::ElasticLoadBalancingV2::Listener
+        Properties: 
+            DefaultActions: 
+                -   Type: forward
+                    TargetGroupArn: !Ref MyFirstTG
+            LoadBalancerArn: !Ref MyALB
+            Port: 80
+            Protocol: HTTP
+            
+
