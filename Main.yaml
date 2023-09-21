@@ -21,10 +21,15 @@ Parameters:
     Type: String
     Description: "MyVPC VPCID"
     Default: vpc-0e1511c215463608f
-  PublicSubnet:
+  PublicSubnet1A:
     Type: String
-    Description: "Myvpc public Subnet"
+    Description: "Myvpc public Subnet1A"
     Default: subnet-0ec0f748fd14c1b7d
+  PublicSubnet1B:
+    Type: String
+    Description: "My VPC Public Subnet1B"
+    Default: subnet-091e7f96391737d79
+  
   PrivateSubnet:
     Type: String
     Description: "Myvpc Private subnet"
@@ -45,8 +50,21 @@ Resources:
   ALB:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: 
+      TemplateURL: https://childstackbucket12344321.s3.amazonaws.com/ALB.yaml
       Parameters: 
-        publicSubnetID: !Ref PublicSubnet
+        publicSubnet1A: !Ref PublicSubnet1A
+        VPCID: !Ref VPCID
+        PublicSubnet1B: !Ref PublicSubnet1B
+        PublicSSGID: !GetAtt SecurityGroup.Outputs.PublicSubnetSSGID
+  
+  ASG:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+         TemplateURL: https://childstackbucket12344321.s3.amazonaws.com/ASG.yaml
+         Parameters:
+              TGID: !GetAtt ALB.Outputs.TGID 
+              PublicSubnet1A: !Ref PublicSubnet1A
+              PublicSubnet1B: !Ref PublicSubnet1B
+
             
                  
