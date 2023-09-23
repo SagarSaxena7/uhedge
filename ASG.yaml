@@ -42,12 +42,6 @@ Resources:
             InstanceType: t2.micro
             SecurityGroupIds: 
               - sg-0d4e61fa5c1a008aa
-            TagSpecifications:
-                 -   ResourceType: instance
-                     Tags: 
-                       - Key: backup
-                         Value: true
-
             UserData: !Base64
               Fn::Sub: |
                  #!/bin/bash
