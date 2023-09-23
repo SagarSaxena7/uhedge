@@ -7,14 +7,15 @@ Parameters:
 
 Resources:
 
-  ParentStack:
+  ec2:
     Type: AWS::CloudFormation::Stack
     Properties: 
       Parameters: 
         Region: !Ref Region
+        sfid: !GetAtt sg.output.HedgeSecurityGroupId
       TemplateURL: https://s3.amazonaws.com/nested-stack-bucket-us-west-2/sg.template
 
-  # EC2Stack:
+  # sg:
   #   Type: AWS::CloudFormation::Stack
   #   Properties: 
   #     Parameters: 

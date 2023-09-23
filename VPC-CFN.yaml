@@ -18,7 +18,7 @@ Parameters:
   AZ:
     Description: "ParameterForAZ"
     Type: AWS::EC2::AvailabilityZone::Name
-    Default: us-east-1a
+    Default: us-west-2a
 
 Resources:
 
@@ -72,8 +72,8 @@ Resources:
          Egress: true
          CidrBlock: !Ref PublicSubnetCidrBlock
          PortRange:
-              From: 3389
-              To: 3389
+              From: 1024
+              To: 65535
     
   NaclAsstoPrivateSubnet:
     Type: AWS::EC2::SubnetNetworkAclAssociation
