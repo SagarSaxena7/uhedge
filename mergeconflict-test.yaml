@@ -2,8 +2,8 @@ EC2:
   myEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      KeyName: sagar-keypair.pem
-      DisableApiTermination: false
+      KeyName: sahil-keypair.pem
+      DisableApiTermination: true
       ImageId: ami-asdsad
-      InstanceType: t2.micro
+      InstanceType: t2.medium
       
