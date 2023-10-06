@@ -1,0 +1,8 @@
+Resources:
+  VPC-CFN:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://mybucket7554.s3.amazonaws.com/SecurityGroup.yaml
+      Parameters:
+        InstanceType: t1.micro
+        KeyName: mykey

@@ -1,0 +1,55 @@
+Resources:
+  backupbyCFN:
+     Type: AWS::Backup::BackupPlan
+     Properties: 
+      BackupPlan: 
+          AdvancedBackupSettings: 
+            -  BackupOptions: 
+                 WindowsVSS: disabled
+               ResourceType: EC2
+
+          BackupPlanName: backupbyCFN
+          BackupPlanRule: 
+            -   CompletionWindowMinutes: 120
+                RuleName: dailybackupbycfn
+                ScheduleExpression: "cron(0 7 * * ? *)"
+                StartWindowMinutes: 60
+                TargetBackupVault: !Ref backupvault
+
+  backupvault:
+    Type: AWS::Backup::BackupVault
+    Properties: 
+      BackupVaultName: backupvaultbycfn
+      
+  backuprulebycfn:
+    Type:  AWS::Backup::BackupSelection
+    Properties: 
+      BackupPlanId: !Ref backupbyCFN
+      BackupSelection: 
+          # Conditions: 
+          #   StringEquals:
+          #     - ConditionKey: 'aws:ResourceTag/backup'
+          #       ConditionValue: true
+          IamRoleArn: !GetAtt backupIAMrole.Arn
+          SelectionName: backupfortrueusecases
+          ListOfTags:
+            -   ConditionKey: aws:ResourceTag/backup
+                ConditionType: STRINGEQUALS
+                ConditionValue: true
+
+
+
+  backupIAMrole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: BackupIAMRole
+      ManagedPolicyArns: 
+        - 'arn:aws:iam::460638841287:role/aws-service-role/backup.amazonaws.com/AWSServiceRoleForBackup'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: backup.amazonaws.com
+            Action: sts:AssumeRole      
+  
